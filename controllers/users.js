@@ -81,3 +81,14 @@ exports.logIn = (req, res, next) => {
     })
     .catch(err => console.log(err));
 }
+
+exports.users = (req, res, next) => {
+    User.find()
+    .then(user => {
+        if (user){
+            return res
+            .status(200)
+            .send(user);
+        }
+    })
+}
