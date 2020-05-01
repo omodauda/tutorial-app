@@ -6,17 +6,6 @@ const authRoutes = require("./routes/route");
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
-app.use(authRoutes);
-
-
-
-
-app.listen(3000, function(){
-    console.log("server running on port 3000!")
-});
-
 mongoose
     .connect(
         "mongodb+srv://admin-babslaw:babalola1996@cluster0-hthp7.mongodb.net/tutorialDB",
@@ -28,3 +17,16 @@ mongoose
     .catch (err => {
         console.log(err)
     });
+
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+app.use('/tutorial-app/api/v1', authRoutes);
+
+
+
+
+app.listen(3000, function(){
+    console.log("server running on port 3000!")
+});
+
+
