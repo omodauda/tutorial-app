@@ -25,4 +25,20 @@ const userSchema = new Schema({
 
 }, {timestamps: true});
 
+userSchema.virtual('Subjects_registered', {
+    ref: 'RegisterSubject',
+    foreignField: 'user',
+    localField: '_id'
+  })
+userSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'registeredSubjects',
+        select: '-__v'
+    })
+    next()
+})
+
+userSchema.set('toObject', { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
+
 module.exports = mongoose.model("User", userSchema);
