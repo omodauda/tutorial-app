@@ -9,10 +9,29 @@ const subjectSchema = new Schema (
         },
         category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
-        }
+        ref: 'Category',
+        },
     }
 );
+
+subjectSchema.virtual('Tutors', {
+    ref: 'RegisterSubject',
+    foreignField: 'subject',
+    localField: '_id'
+  })
+subjectSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'registeredSubjects',
+        select: 'firstName'
+    })
+    next()
+})
+
+
+subjectSchema.set('toObject', { virtuals: true });
+subjectSchema.set('toJSON', { virtuals: true });
+
+subjectSchema.index({ name: 'text' })  
 
 const Subject = mongoose.model("Subject", subjectSchema);
 module.exports = Subject;

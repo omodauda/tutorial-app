@@ -61,6 +61,7 @@ exports.logIn = (req, res, next) => {
             .status(404)
             .send("User not found, please provide valid credentials");
         }
+        // console.log(user);
 
         bcrypt.compare(password, user.password).then(valid => {
             if (!valid){
@@ -69,7 +70,7 @@ exports.logIn = (req, res, next) => {
                 .send("Incorrect username or password, please review details and try again");
             }
             const token = jwt.sign(
-                { email: user.email, _id: user.id },
+                {_id: user.id},
                 "somesecretkey",
                 { expiresIn: "3hrs" }
             );
@@ -82,8 +83,8 @@ exports.logIn = (req, res, next) => {
     .catch(err => console.log(err));
 }
 
-exports.users = (req, res, next) => {
-    User.find()
+exports.users = async (req, res, next) => {
+    User.find({}, null, {sort: {firstName:1}})
     .then(user => {
         if (user){
             return res
@@ -91,4 +92,77 @@ exports.users = (req, res, next) => {
             .send(user);
         }
     })
+};
+
+exports.usersById = function (req, res, next) {
+    const id = req.params.id;
+    User.findById(id, function(err, foundUser){
+        if(foundUser){
+            res.send(foundUser);
+        } else {
+            res.send("no user matching that id was found");
+        }
+    });
+    
 }
+
+
+
+exports.tutors = async (req, res, next) =>{
+    console.log(req.query);
+    let searchQuery = { }
+    if (req.query.q) {
+        const searchString = req.query.q.split(',').join(' ')
+        searchQuery = ({ $text: { $search: searchString}})
+    }
+    const tutors = await User.find({role: "tutor"}).sort({ name: 1}).populate({
+        path: 'Subjects_registered',
+        select: '-__v'
+    }).select('-__v')
+    res.status(200).json({
+        status: 'success',
+        results: tutors.length,
+        data: {
+            data: tutors
+        }
+    })
+}
+
+
+exports.tutorById = function(req, res, next){
+    const id = req.params.id;
+    User.find({_id:id, role: "tutor"}, function(err, tutor){
+        if(!tutor){
+            res.send("no tutor matching the provided id found");
+        }else{
+            res.send(tutor);
+        }
+    })
+}
+
+// exports.tutorById = async (req, res, next) =>{
+//     const id = req.params.id;
+//     const tutor = await User.findOne({_id:id, role:"tutor"}).populate({
+//         path: 'Registered_Subjects',
+//         select: '-__v'
+//     }).select('-__v')
+//     res.status(200).json({
+//         status: 'success',
+//         results: tutor,
+//         data: {
+//           data: tutor
+//         }
+//       });
+// }
+
+exports.deleteTutor = function(req, res, next) {
+    const id = req.params.id;
+    User.findOneAndDelete({_id:id, role:"tutor"}, function(err, tutor){
+        if(tutor){
+            res.send("tutor deleted successfully");
+        }else {
+            res.send("no tutor matching that id was found");
+        }
+    })
+}
+
