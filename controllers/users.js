@@ -140,20 +140,16 @@ exports.tutorById = function(req, res, next){
     })
 }
 
-// exports.tutorById = async (req, res, next) =>{
-//     const id = req.params.id;
-//     const tutor = await User.findOne({_id:id, role:"tutor"}).populate({
-//         path: 'Registered_Subjects',
-//         select: '-__v'
-//     }).select('-__v')
-//     res.status(200).json({
-//         status: 'success',
-//         results: tutor,
-//         data: {
-//           data: tutor
-//         }
-//       });
-// }
+exports.tutorToAdmin = function(req, res, next){
+    const id = req.params.id;
+    User.findByIdAndUpdate(id,{$set: {role: "admin" }}, function(err){
+        if(!err){
+            res.send("updated successfully");
+        } else {
+            res.send("update failed");
+        }
+    })
+}
 
 exports.deleteTutor = function(req, res, next) {
     const id = req.params.id;

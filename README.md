@@ -55,7 +55,7 @@ Login a user
 
 **Create category**
 ----
-Create a category
+Create a category (only admin can create a category)
 
 * **URL**
     /categories
@@ -115,7 +115,7 @@ Retrieve all subjects by category
 
 **Update a category**
 ----
-Update a category by id
+Update a category by id (only admin can update a category).
 
 * **URL**
     /categories/:id
@@ -132,7 +132,7 @@ Update a category by id
 
 **Delete a category**
 ----
-Delete a category by id
+Delete a category by id (only admin can delete a category)
 
 * **URL**
     /categories/:id
@@ -169,14 +169,14 @@ Retrieve a subject in a category by id
 
 **Create subject**
 ----
-Create a subject in a category
+Create a subject in a category (only admin can create a subject in a category)
 
 * **URL**
     /subjects
 * **Method:**
     `POST`
 
-* **URL Body** <br />
+* **URL Body:raw** <br />
     **Required:**
     `{
         "name": "subject name",
@@ -191,7 +191,7 @@ Create a subject in a category
 
 **Update a subject in a category**
 ----
-Update a subject in a category by id
+Update a subject in a category by id (only admin can update a subject in a category)
 
 * **URL**
     /subjects/:id
@@ -213,7 +213,7 @@ Update a subject in a category by id
 
 **Delete a subject**
 ----
-Delete a subject in a category by id
+Delete a subject in a category by id (only admin can delete a subject in a category)
 
 * **URL**
     /subjects/:id
@@ -252,7 +252,7 @@ search for subjects by name
 
 **Retrieve tutors**
 ----
-Retrieve all tutors
+Retrieve all tutors (only admin can retrieve all tutors)
 
 * **URL** <br />
     /tutors
@@ -270,7 +270,7 @@ Retrieve all tutors
 
 **Retrieve tutor by id**
 ----
-Retrieve a tutor by id
+Retrieve a tutor by id (only admin can retrieve a tutor by id)
 
 * **URL** <br />
     /tutors/:id
@@ -289,7 +289,7 @@ Retrieve a tutor by id
 
 **Deactivate a tutor**
 ----
-Deactivate a tutor by id
+Deactivate a tutor by id (only admin can deactivate a tutor)
 
 * **URL** <br />
     /tutors/:id
@@ -309,8 +309,8 @@ Deactivate a tutor by id
 
 **Register to take a subject**
 ----
-Register to take a subject in a category. 
-Note: Only tutors can register to take a subject
+Register to take a subject in a category (Only tutors can register to take a subject)
+
 * **URL** <br />
     /tutors/registersubject
 * **Method:**
@@ -329,8 +329,7 @@ Note: Only tutors can register to take a subject
 
 **Delete a registered subject**
 ----
-Delete a registered subject. 
-Note: tutors only
+Delete a registered subject (only tutors can delete a registered subject)
 * **URL** <br />
     /tutors/registersubject/:id
 * **Method:**
@@ -349,8 +348,7 @@ Note: tutors only
 
 **Book a lesson**
 ----
-Book a lesson for a subject.
-Note: only admin and student can book a lesson
+Book a lesson for a subject (only admin and student can book a lesson)
 * **URL** <br />
     /lessons
 * **Method:**
@@ -368,8 +366,7 @@ Note: only admin and student can book a lesson
 
 **Retrieve all lessons**
 ----
-Retrieve all lessons
-Note: only admin can retrieve lessons
+Retrieve all lessons (only admin can retrieve lessons)
 * **URL** <br />
     /lessons
 * **Method:**
@@ -387,8 +384,7 @@ Note: only admin can retrieve lessons
 
 **Retrieve lesson by id**
 ----
-Retrieve a lesson by id
-Note: only admin can retrieve a lesson
+Retrieve a lesson by id (only admin can retrieve a lesson by id)
 * **URL** <br />
     /lessons/:id
 * **Method:**
@@ -406,8 +402,8 @@ Note: only admin can retrieve a lesson
 
 **Update lesson by id**
 ----
-Update a lesson by id
-Note: only admin can update a lesson
+Update a lesson by id (only admin can update a lesson)
+
 * **URL** <br />
     /lessons/:id
 * **Method:**
@@ -427,8 +423,7 @@ Note: only admin can update a lesson
 
 **Delete lesson by id**
 ----
-Delete a lesson by id
-Note: only admin can delete a lesson
+Delete a lesson by id (only admin can delete a lesson)
 * **URL** <br />
     /lessons/:id
 * **Method:**
@@ -443,3 +438,20 @@ Note: only admin can delete a lesson
     * **code:** 400 <br />
       **content:** `Cannot DELETE route....`
 
+
+**Make a tutor an admin**
+----
+Make a tutor an admin (only registered admin can make a tutor an admin)
+* **URL** <br />
+    /tutors/:id/admin
+* **Method:**
+    `PATCH`
+
+* **URL Path variable**
+    `id: tutor id`
+* **Success Response**
+    * **code:** 200 <br />
+      **content:** `"updated successfully`
+* **Error Response**
+    * **code:** 400 <br />
+      **content:** `"update failed"`

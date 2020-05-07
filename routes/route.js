@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { signUp, logIn, users, usersById, tutors, tutorById, deleteTutor } = require("../controllers/users");
+const { signUp, logIn, users, usersById, tutors, tutorById, deleteTutor, tutorToAdmin } = require("../controllers/users");
 const {checkAuth, restrictAccess} = require('../middleware/auth');
 const {bookLesson, getAllLessons, lessonById, updateLesson, deleteLesson} = require('../controllers/lesson');
 
@@ -21,6 +21,9 @@ router.post('/login', logIn);
 //users
 router.get('/users', users);
 router.get('/users/:id', usersById);
+
+//tutor to admin
+router.patch('/tutors/:id/admin', tutorToAdmin);
 
 //tutors
 router.get('/tutors', checkAuth, restrictAccess('admin'), tutors); //retrieve all tutors -admin
