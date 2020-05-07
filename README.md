@@ -1,5 +1,7 @@
 # tutorial-app
 
+heroku link: https://evening-eyrie-72400.herokuapp.com/tutorial-app/api/v1
+
 Admin details: <br />
 **firstName: Lawal** <br />
 **email: omodauda@yahoo.com** <br />
